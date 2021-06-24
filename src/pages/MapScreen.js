@@ -2,7 +2,7 @@ import React from 'react';
 import { SafeAreaView, Text } from 'react-native';
 import MapView, { PROVIDER_DEFAULT } from 'react-native-maps';
 
-export function MainMap() {
+export default function MapScreen() {
   return (
     <SafeAreaView style={{ flex: 1 }}
     >
