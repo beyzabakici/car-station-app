@@ -1,8 +1,7 @@
 import React from 'react';
-import { SafeAreaView, Text, Button } from 'react-native';
+import { SafeAreaView, Button } from 'react-native';
 import * as Google from 'expo-google-app-auth';
 import firebase from 'firebase';
-import { firebaseConfig } from '../../config';
 
 export default function LoginScreen() {
 
@@ -21,7 +20,6 @@ export default function LoginScreen() {
   }
 
   const onSignIn = (googleUser) => {
-    console.log('Google Auth Response', googleUser);
     // We need to register an Observer on Firebase Auth to make sure auth is initialized.
     var unsubscribe = firebase.auth().onAuthStateChanged((firebaseUser) => {
       unsubscribe();
@@ -34,7 +32,6 @@ export default function LoginScreen() {
         );
         // Sign in with credential from the Google user.
         firebase.auth().signInWithCredential(credential).then((result) => {
-          console.log('user signed in');
           firebase.database().ref('/users/'+ result.user.uid).set({
             gmail: result.user.email,
             profile_picture: result.additionalUserInfo.profile.picture,
