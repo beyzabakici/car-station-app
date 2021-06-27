@@ -1,18 +1,54 @@
 import React from 'react';
-import { SafeAreaView, Button, Text, Image} from 'react-native';
+import { SafeAreaView, TouchableOpacity, Text, Image, StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import firebase from 'firebase';
 
 export default function ProfileScreen() {
   const user = firebase.auth().currentUser;
-  return(
-    <SafeAreaView style={{ display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-      <Image  style={{height: 100, width: 100}} source={{ uri: user.photoURL }} />
-      <Text>{user.displayName}</Text>
-        <Button 
-        title='Sing Out' 
-        onPress={() => firebase.auth().signOut()}
-      />
+  return (
+    <SafeAreaView style={styles.container}>
+      <TouchableOpacity style={styles.signOutButton} onPress={() => firebase.auth().signOut()}>
+      <Icon name='logout' color='tomato' size={30} />
+      </TouchableOpacity>
+      <View style={styles.profileArea}>
+      <View style={styles.photoArea}>
+        <Image style={styles.photo} source={{ uri: user.photoURL }} />
+      </View>
+      <Text style={styles.label}>{user.displayName}</Text>
+      </View>
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  profileArea: {
+    margin: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  photoArea: {
+    backgroundColor: '#ccc',
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
+  },
+  photo: {
+    borderRadius: 60,
+    width: 100,
+    height: 100
+  },
+  label: {
+    fontSize: 18,
+    padding: 10,
+  },
+  signOutButton: {
+    alignItems: 'flex-end',
+    margin: 10,   
+  }
+});

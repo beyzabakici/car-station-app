@@ -24,8 +24,8 @@ function AppStack() {
         tabBarLabel: () => null,
       })}
       tabBarOptions={{
-        activeTintColor: '#f8792b',
-        inactiveTintColor: '#bdbdbd',
+        activeTintColor: 'tomato',
+        inactiveTintColor: '#ccc',
       }}
     >
       <Tab.Screen name="MapScreen" component={MapScreen} />

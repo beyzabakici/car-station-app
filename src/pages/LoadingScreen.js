@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { ActivityIndicator, SafeAreaView } from 'react-native';
 import firebase from 'firebase';
+import Loading from '../components/Loading';
 
 export default function LoadingScreen(props) {
   useEffect(() => {
@@ -18,8 +18,6 @@ export default function LoadingScreen(props) {
   }
 
   return(
-    <SafeAreaView style={{ flex:1, alignItems: "center", justifyContent: "center"}}>
-      <ActivityIndicator size='large'/>
-    </SafeAreaView>
+    <Loading />
   );
 }
