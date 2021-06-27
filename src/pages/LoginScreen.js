@@ -2,6 +2,7 @@ import React from 'react';
 import { SafeAreaView, Button } from 'react-native';
 import * as Google from 'expo-google-app-auth';
 import firebase from 'firebase';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function LoginScreen() {
 
@@ -71,7 +72,9 @@ export default function LoginScreen() {
 
   return(
     <SafeAreaView style={{ flex:1, alignItems: "center", justifyContent: "center"}}>
+      <Icon name='toy-brick-search' color='tomato' size={50} />
       <Button 
+        color='tomato'
         title='Sing In With Google' 
         onPress={() => signInWithGoogleAsync()}
       />
