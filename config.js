@@ -4,5 +4,6 @@ export const firebaseConfig = {
   projectId: "car-station-app",
   storageBucket: "car-station-app.appspot.com",
   messagingSenderId: "369936574538",
-  appId: "1:369936574538:web:cdb45bdc7157877457deb3"
+  appId: "1:369936574538:web:cdb45bdc7157877457deb3",
+  measurementId: "G-2B96R6HJPJ"
 };
