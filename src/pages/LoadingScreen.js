@@ -10,7 +10,7 @@ export default function LoadingScreen(props) {
   checkIfLoggedIn = () => {
     firebase.auth().onAuthStateChanged((user) => {
       if(user) {
-        props.navigation.navigate('MapScreen');
+        props.navigation.navigate('AppStack');
       } else {
         props.navigation.navigate('LoginScreen');
       }
