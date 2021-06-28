@@ -23,6 +23,9 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    margin: 20,
+    borderRadius: 15,
+    backgroundColor: '#fff'
   },
   profileArea: {
     margin: 50,
