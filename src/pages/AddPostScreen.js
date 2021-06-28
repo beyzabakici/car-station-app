@@ -1,80 +1,63 @@
-import React from 'react';
-import { Text, View, StyleSheet, TextInput, Alert, SafeAreaView } from 'react-native';
-import { Button } from 'react-native-paper';
-import { Formik, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
+import React, { useState } from 'react';
+import { Text, View, StyleSheet, TextInput, Button, SafeAreaView, TouchableOpacity, Alert } from 'react-native';
+import firebase from 'firebase';
 
 
-export default function AddPostScreen() {
-  return(
+export default function AddPostScreen({ navigation: { navigate } }) {
+  const [postTitle, setPostTitle] = useState('');
+  const [price, setPrice] = useState(null);
+  const user = firebase.auth().currentUser;
+  const date = new Date().getTime();
+
+  function handleSubmit() {
+    firebase.database().ref('/posts/' + date).set({
+      title: postTitle ? postTitle : '',
+      price: price ? price : 0 ,
+      location: 'xxxx',
+      isActive: true,
+      user_name: user.displayName,
+      user_id: user.providerData[0].uid,
+    })
+    Alert.alert('success add post');
+    navigate('MapScreen')
+  }
+
+  function handleReset() {
+    setPrice(null);
+    setPostTitle('');
+  }
+
+  return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>Formik x React Native</Text>
-        <Formik
-          initialValues={{ name: '', email: '' }}
-          validationSchema={Yup.object({
-            name: Yup.string()              
-              .required('Required'),
-            email: Yup.string()
-              .email('Invalid Email')
-              .required('Required'),
-          })}
-          onSubmit={(values, formikActions) => {
-            setTimeout(() => {
-              Alert.alert(JSON.stringify(values));
-              // Important: Make sure to setSubmitting to false so our loading indicator
-              // goes away.
-              formikActions.setSubmitting(false);
-            }, 500);
-          }}>
-          {props => ( console.log(props) ||
-            <View>
-             <TextInput
-                onChangeText={props.handleChange('name')}
-                onBlur={props.handleBlur('name')}
-                value={props.values.name}
-                autoFocus
-                placeholder="Your Name"
-                style={styles.input}
-                onSubmitEditing={() => {
-                  // on certain forms, it is nice to move the user's focus
-                  // to the next input when they press enter.
-                  this.emailInput.focus()
-                }}
-              />
-              {props.touched.name && props.errors.name ? (
-                <Text style={styles.error}>{props.errors.name}</Text>
-              ) : null}
-              <TextInput
-                onChangeText={props.handleChange('email')}
-                onBlur={props.handleBlur('email')}
-                value={props.values.email}
-                placeholder="Email Address"
-                style={styles.input}
-                ref={el => this.emailInput = el}
-              />
-              {props.touched.email && props.errors.email ? (
-                <Text style={styles.error}>{props.errors.email}</Text>
-              ) : null}
-              <Button
-                onPress={props.handleSubmit}
-                color="black"
-                mode="contained"
-                loading={props.isSubmitting}
-                disabled={props.isSubmitting}
-                style={{ marginTop: 16 }}>
-                Submit
-              </Button>
-              <Button
-                onPress={props.handleReset}
-                color="black"
-                mode="outlined"
-                disabled={props.isSubmitting}
-                style={{ marginTop: 16 }}>
-                Reset
-              </Button>
-            </View>
-          )}
-        </Formik>
+      <Text style={styles.title}>Add Post</Text>
+      <Text style={styles.name}>{user.displayName}</Text>
+      <TextInput
+        style={styles.input}
+        onChangeText={setPostTitle}
+        placeholder="post title"
+        value={postTitle}
+      />
+      <View style={styles.inputWrapper}>
+        <TextInput
+          style={styles.input}
+          onChangeText={setPrice}
+          value={price}
+          placeholder="price per second"
+          keyboardType="numeric"
+        />
+        <Text style={styles.price}>₺</Text>
+      </View>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => handleSubmit()}
+      >
+        <Text style={styles.buttonText}>Submit</Text>
+      </TouchableOpacity>
+      <Button
+        title='Reset'
+        color='tomato'
+        onPress={() => handleReset()}
+      />
     </SafeAreaView>
   );
 }
@@ -83,27 +66,49 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     margin: 20,
+    marginTop: 30,
     borderRadius: 15,
-    backgroundColor: '#fff'
+    backgroundColor: '#fff',
+    justifyContent: 'center'
+  },
+  input: {
+    margin: 10,
+    padding: 15,
+    paddingLeft: 15,
+    paddingHorizontal: 8,
+    borderColor: 'tomato',
+    borderWidth: 1,
+    borderRadius: 10,
   },
   title: {
-    margin: 24,
     fontSize: 24,
+    marginTop: 10,
     fontWeight: 'bold',
     textAlign: 'center',
   },
-  error: {
-    margin: 8,
-    fontSize: 14,
-    color: 'red',
-    fontWeight: 'bold',
+  name: {
+    textAlign: 'center',
+    margin: 10,
   },
-  input: {
-    height: 50,
-    paddingHorizontal: 8,
-    width: '100%',
-    borderColor: '#ddd',
-    borderWidth: 1,
-    backgroundColor: '#fff',
+  inputWrapper: {
+    position: 'relative',
   },
+  price: {
+    position: 'absolute',
+    right: 25,
+    top: 25,
+    fontSize: 18,
+  },
+  button: {
+    backgroundColor: 'tomato',
+    padding: 15,
+    borderRadius: 10,
+    margin: 10,
+    marginTop: 30
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
+    alignSelf: 'center'
+  }
 });
