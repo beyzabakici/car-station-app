@@ -9,6 +9,7 @@ export default function MapScreen() {
   const [errorMsg, setErrorMsg] = useState(null);
   const [isLoading, setLoading] = useState(false);
 
+
   const coordFede = {
     latitude: 38.0157826,
     longitude: 32.5221166,
