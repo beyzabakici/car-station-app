@@ -10,26 +10,12 @@ import ProfileScreen from './src/pages/ProfileScreen';
 import LoginScreen from './src/pages/LoginScreen';
 import AddPostScreen from './src/pages/AddPostScreen';
 
-import { createStore } from 'redux';
-import { reducer } from './src/reducers';
-import { Provider, connect } from 'react-redux';
-
-const store = createStore(reducer);
-
-
 import firebase from 'firebase';
 import { firebaseConfig } from './config';
 firebase.initializeApp(firebaseConfig);
 
-
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-
-const mapStateToProps = state => {
-  return {
-    users: state.users ,
-  };
-};
 
 function AppStack() {
   return (
@@ -50,23 +36,21 @@ function AppStack() {
       <Tab.Screen name="ProfileScreen" component={ProfileScreen} />
     </Tab.Navigator>
   )
-};
+}
 
 const App = props => {
   console.log(props);
   return (
-    <Provider store={store} >
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{ header: () => null }}>
-          <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
-          <Stack.Screen name="LoginScreen" component={LoginScreen} />
-          <Stack.Screen name="AppStack" component={AppStack} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </Provider>
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{ header: () => null }}>
+        <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
+        <Stack.Screen name="LoginScreen" component={LoginScreen} />
+        <Stack.Screen name="AppStack" component={AppStack} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-};
+}
 
 
 function generateIcon(color, route) {
@@ -85,9 +69,9 @@ function generateIcon(color, route) {
 
     default:
       break;
-  };
+  }
 
   return <Icon name={iconName} color={color} size={30} />
 };
 
-export default connect(mapStateToProps)(App);
+export default App;
