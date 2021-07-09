@@ -11,10 +11,11 @@ import LoginScreen from './src/pages/LoginScreen';
 import AddPostScreen from './src/pages/AddPostScreen';
 
 import { createStore } from 'redux';
-import { reducer } from './src/reducers/index';
+import { reducer } from './src/reducers';
 import { Provider, connect } from 'react-redux';
 
 const store = createStore(reducer);
+
 
 import firebase from 'firebase';
 import { firebaseConfig } from './config';
@@ -26,24 +27,23 @@ const Tab = createBottomTabNavigator();
 
 const mapStateToProps = state => {
   return {
-    users: state.users,
+    users: state.users ,
   };
 };
 
 function AppStack() {
-  console.log(users);
   return (
     <Tab.Navigator
-      initialRouteName="Main"
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ color }) =>
-          generateIcon(color, route),
-        tabBarLabel: () => null,
-      })}
-      tabBarOptions={{
-        activeTintColor: 'tomato',
-        inactiveTintColor: '#ccc',
-      }}
+    initialRouteName="Main"
+    screenOptions={({ route }) => ({
+      tabBarIcon: ({ color }) =>
+      generateIcon(color, route),
+      tabBarLabel: () => null,
+    })}
+    tabBarOptions={{
+      activeTintColor: 'tomato',
+      inactiveTintColor: '#ccc',
+    }}
     >
       <Tab.Screen name="MapScreen" component={MapScreen} />
       <Tab.Screen name="AddPostScreen" component={AddPostScreen} />
@@ -52,7 +52,8 @@ function AppStack() {
   )
 };
 
-function App() {
+const App = props => {
+  console.log(props);
   return (
     <Provider store={store} >
       <NavigationContainer>
