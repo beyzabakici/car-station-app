@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Text, View, StyleSheet, TextInput, Button, SafeAreaView, TouchableOpacity, Alert } from 'react-native';
 import firebase from 'firebase';
+import { useSelector } from 'react-redux';
 
 
 export default function AddPostScreen({ navigation: { navigate } }) {
@@ -8,12 +9,13 @@ export default function AddPostScreen({ navigation: { navigate } }) {
   const [price, setPrice] = useState(null);
   const user = firebase.auth().currentUser;
   const date = new Date().getTime();
+  const location = useSelector( s => s.location);
 
   function handleSubmit() {
     firebase.database().ref('/posts/' + date).set({
       title: postTitle ? postTitle : '',
       price: price ? price : 0 ,
-      location: 'xxxx',
+      location: location,
       isActive: true,
       user_name: user.displayName,
       user_id: user.providerData[0].uid,

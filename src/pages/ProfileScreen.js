@@ -1,32 +1,32 @@
 import React from 'react';
-import { SafeAreaView, TouchableOpacity, Text, Image, StyleSheet, View } from 'react-native';
+import { SafeAreaView, TouchableOpacity, Text, Image, StyleSheet, View, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import firebase from 'firebase';
 import { useSelector } from 'react-redux';
 
 export default function ProfileScreen() {
   const user = firebase.auth().currentUser;
-  const location = useSelector( s => s.location);
-  
-  // var starCountRef = firebase.database().ref('posts/');
-  // starCountRef.on('value', (snapshot) => {
-  //   const data = snapshot.val();
-  //   console.log(data);
-  // });
+  const postList = useSelector(s => s.postList);
 
-  console.log({location});
+  const handleSignOut = () => {
+    firebase.auth().signOut();
+  }
+
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity style={styles.signOutButton} onPress={() => firebase.auth().signOut()}>
-      <Icon name='logout' color='tomato' size={30} />
+      <TouchableOpacity style={styles.signOutButton} onPress={() => handleSignOut()}>
+        <Icon name='logout' color='tomato' size={30} />
       </TouchableOpacity>
       <View style={styles.profileArea}>
-      <View style={styles.photoArea}>
-        <Image style={styles.photo} source={{ uri: user.photoURL }} />
-      </View>
-      <Text style={styles.label}>{user.displayName}</Text>
-      <Text>
-      </Text>
+        <View style={styles.photoArea}>
+          <Image style={styles.photo} source={{ uri: user.photoURL }} />
+        </View>
+        <Text style={styles.label}>{user.displayName}</Text>
+        <FlatList 
+          data={postList} 
+          keyExtractor={(_, index) => index.toString()} 
+          renderItem={(item) => console.log(item)} 
+        />
       </View>
     </SafeAreaView>
   );
@@ -65,6 +65,6 @@ const styles = StyleSheet.create({
   },
   signOutButton: {
     alignItems: 'flex-end',
-    margin: 10,   
+    margin: 10,
   }
 });
