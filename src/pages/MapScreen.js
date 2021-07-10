@@ -15,9 +15,11 @@ export default function MapScreen() {
 
   useEffect(() => {
     const dbRef = firebase.database().ref('posts/');
-    dbRef.on('value', (snapshot) => {
-      const data = snapshot.val();
+    dbRef.orderByValue().on("value", function(snapshot) {
+    console.log(snapshot.val());
+    snapshot.forEach(function(data) {
       dispatch({ type: 'ADD_POST', payload:{ post: data }});
+    });
     });
 
     setLoading(true);
