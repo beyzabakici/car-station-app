@@ -8,11 +8,10 @@ export default function AddPostScreen({ navigation: { navigate } }) {
   const [postTitle, setPostTitle] = useState('');
   const [price, setPrice] = useState(null);
   const user = firebase.auth().currentUser;
-  const date = new Date().getTime();
   const location = useSelector( s => s.location);
 
   function handleSubmit() {
-    firebase.database().ref('/posts/' + date).set({
+    firebase.database().ref('/posts/').push({
       title: postTitle ? postTitle : '',
       price: price ? price : 0 ,
       location: location,

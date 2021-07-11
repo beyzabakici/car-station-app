@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet, FlatList } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../components/Loading';
 import firebase from 'firebase';
 
@@ -12,14 +12,15 @@ export default function MapScreen() {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [isLoading, setLoading] = useState(false);
+  const postList = useSelector(s => s.postList);
+  console.log('postList', postList);
 
   useEffect(() => {
     const dbRef = firebase.database().ref('posts/');
-    dbRef.orderByValue().on("value", function(snapshot) {
-    console.log(snapshot.val());
-    snapshot.forEach(function(data) {
-      dispatch({ type: 'ADD_POST', payload:{ post: data }});
-    });
+    dbRef.orderByValue().on("value", function (snapshot) {
+      snapshot.forEach((snapshotChild) => {
+        dispatch({ type: 'ADD_POST', payload: { post: snapshotChild } });
+      })
     });
 
     setLoading(true);
@@ -54,7 +55,14 @@ export default function MapScreen() {
             latitudeDelta: 0.01,
             longitudeDelta: 0.01,
           }}>
-          {/* <Marker coordinate={coordDolmabahce} />   */}
+          <FlatList
+            data={postList}
+            keyExtractor={(_, index) => index.toString()}
+            renderItem={(item) => 
+              // <Marker coordinate={ latitude= item.location.latitude,
+              //   longitude= item.location.longitude }/>
+            }
+              />
         </MapView>
         : <Loading />
       }

@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux';
 
 export default function ProfileScreen() {
   const user = firebase.auth().currentUser;
-  const postList = useSelector(s => s.postList);
 
   const handleSignOut = () => {
     firebase.auth().signOut();
@@ -22,11 +21,6 @@ export default function ProfileScreen() {
           <Image style={styles.photo} source={{ uri: user.photoURL }} />
         </View>
         <Text style={styles.label}>{user.displayName}</Text>
-        <FlatList 
-          data={postList} 
-          keyExtractor={(_, index) => index.toString()} 
-          renderItem={(item) => console.log(item)} 
-        />
       </View>
     </SafeAreaView>
   );
