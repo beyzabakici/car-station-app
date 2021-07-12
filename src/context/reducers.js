@@ -1,4 +1,5 @@
 export default function (state, action) {
+  // console.log('reducer : ', action)
   switch (action.type) {
     case "ADD_LOCATION":
       return { ...state, location: action.payload.location };

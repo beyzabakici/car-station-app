@@ -13,13 +13,12 @@ export default function MapScreen() {
   const [errorMsg, setErrorMsg] = useState(null);
   const [isLoading, setLoading] = useState(false);
   const postList = useSelector(s => s.postList);
-  console.log('postList', postList);
 
   useEffect(() => {
     const dbRef = firebase.database().ref('posts/');
     dbRef.orderByValue().on("value", function (snapshot) {
       snapshot.forEach((snapshotChild) => {
-        dispatch({ type: 'ADD_POST', payload: { post: snapshotChild } });
+        dispatch({ type: 'ADD_POST', payload: { post: snapshotChild.val() } });
       })
     });
 
@@ -43,6 +42,10 @@ export default function MapScreen() {
     text = errorMsg;
   }
 
+  const handleMarker = (item) => {
+    return item ? <Marker coordinate={ {latitude: item.location.latitude, longitude: item.location.longitude} }/> : null
+  }
+
   return (
     <SafeAreaView style={styles.container} >
       {!isLoading && currentLocation
@@ -58,11 +61,10 @@ export default function MapScreen() {
           <FlatList
             data={postList}
             keyExtractor={(_, index) => index.toString()}
-            renderItem={(item) => 
-              // <Marker coordinate={ latitude= item.location.latitude,
-              //   longitude= item.location.longitude }/>
+            renderItem={({item}) =>              
+              handleMarker(item)
             }
-              />
+          />
         </MapView>
         : <Loading />
       }
