@@ -32,38 +32,37 @@ export default function MapScreen() {
 
       let location = await Location.getCurrentPositionAsync({});
       setCurrentLocation(location.coords);
-      dispatch({ type: 'ADD_LOCATION', payload: { location: location.coords } });
-      setLoading(false);
+      dispatch({ type: 'ADD_LOCATION', payload: { location: currentLocation } });
+      currentLocation ? setLoading(false) : null ;
     })();
   }, []);
-
+  
   let text = 'Waiting..';
   if (errorMsg) {
     text = errorMsg;
   }
-
-  const handleMarker = (item) => {
+  
+  const handleMarker = ({item}) => {
     return item ? <Marker coordinate={ {latitude: item.location.latitude, longitude: item.location.longitude} }/> : null
   }
-
+  
   return (
+    console.log('map view set  current locatıon', currentLocation ),
     <SafeAreaView style={styles.container} >
       {!isLoading && currentLocation
         ? <MapView
           provider={PROVIDER_GOOGLE}
           style={{ flex: 1 }}
           initialRegion={{
-            latitude: currentLocation.latitude,
             longitude: currentLocation.longitude,
+            latitude: currentLocation.latitude,
             latitudeDelta: 0.01,
             longitudeDelta: 0.01,
           }}>
           <FlatList
             data={postList}
             keyExtractor={(_, index) => index.toString()}
-            renderItem={({item}) =>              
-              handleMarker(item)
-            }
+            renderItem={(item) => handleMarker(item)}
           />
         </MapView>
         : <Loading />

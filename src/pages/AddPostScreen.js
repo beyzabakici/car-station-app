@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Text, View, StyleSheet, TextInput, Button, SafeAreaView, TouchableOpacity, Alert } from 'react-native';
 import firebase from 'firebase';
 import { useSelector } from 'react-redux';
-
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function AddPostScreen({ navigation: { navigate } }) {
   const [postTitle, setPostTitle] = useState('');
@@ -30,6 +30,21 @@ export default function AddPostScreen({ navigation: { navigate } }) {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.buttonBanner}>
+      <TouchableOpacity
+        style={styles.buttonRotate}
+        onPress={() => navigate('MapScreen')}
+      >
+        <Icon name='chevron-left' color='tomato' size={50} />
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.buttonRotate}
+        onPress={() => navigate('ProfileScreen')}
+      >
+        <Icon name='chevron-right' color='tomato' size={50} />
+      </TouchableOpacity>
+      </View>
+      <View style={styles.form}>
       <Text style={styles.title}>Add Post</Text>
       <Text style={styles.name}>{user.displayName}</Text>
       <TextInput
@@ -37,7 +52,7 @@ export default function AddPostScreen({ navigation: { navigate } }) {
         onChangeText={setPostTitle}
         placeholder="post title"
         value={postTitle}
-      />
+        />
       <View style={styles.inputWrapper}>
         <TextInput
           style={styles.input}
@@ -45,20 +60,21 @@ export default function AddPostScreen({ navigation: { navigate } }) {
           value={price}
           placeholder="price per second"
           keyboardType="numeric"
-        />
+          />
         <Text style={styles.price}>₺</Text>
       </View>
       <TouchableOpacity
         style={styles.button}
         onPress={() => handleSubmit()}
-      >
+        >
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
       <Button
         title='Reset'
         color='tomato'
         onPress={() => handleReset()}
-      />
+        />
+        </View>
     </SafeAreaView>
   );
 }
@@ -67,10 +83,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     margin: 20,
-    marginTop: 30,
     borderRadius: 15,
     backgroundColor: '#fff',
-    justifyContent: 'center'
+  },
+  buttonBanner: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  form: {
+    paddingTop: 40,
+
   },
   input: {
     margin: 10,

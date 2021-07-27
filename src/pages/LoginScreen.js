@@ -6,7 +6,6 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useDispatch } from 'react-redux';
 
 export default function LoginScreen() {
-  const dispatch = useDispatch();
 
   const isUserEqual = (googleUser, firebaseUser) => {
     if (firebaseUser) {
