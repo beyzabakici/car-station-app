@@ -33,7 +33,7 @@ export default function MapScreen() {
       let location = await Location.getCurrentPositionAsync({});
       setCurrentLocation(location.coords);
       dispatch({ type: 'ADD_LOCATION', payload: { location: currentLocation } });
-      currentLocation ? setLoading(false) : null ;
+      setLoading(false);
     })();
   }, []);
   
@@ -47,7 +47,7 @@ export default function MapScreen() {
   }
   
   return (
-    console.log('map view set  current locatıon', currentLocation ),
+    console.log('map view set  current location', currentLocation ),
     <SafeAreaView style={styles.container} >
       {!isLoading && currentLocation
         ? <MapView
